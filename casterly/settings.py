@@ -117,6 +117,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'south',
     'gunicorn',
+    'money',
 )
 
 # A sample logging configuration. The only tangible logging
