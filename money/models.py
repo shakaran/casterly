@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import signals
@@ -53,3 +55,69 @@ def set_current_balance(sender, instance, created, **kwargs):
     if created and instance.current_balance == 0.0:
         instance.current_balance = instance.initial_balance
         instance.save()
+
+
+class MovementCategory(models.Model):
+    name = models.CharField(
+        verbose_name=_(u'Name'), max_length=200)
+
+    class Meta:
+        verbose_name = _('Movement category')
+        verbose_name_plural = _('Movement categories')
+
+    def __unicode__(self):
+        return self.name
+
+
+class Movement(models.Model):
+    bank_account = models.ForeignKey(
+        BankAccount,
+        verbose_name=_(u'Bank account'),
+        related_name='movements',
+    )
+    category = models.ForeignKey(
+        MovementCategory,
+        verbose_name=_(u'Category'),
+        blank=True,
+        null=True,
+    )
+    description = models.CharField(
+        verbose_name=_(u'Description'),
+        help_text=_(u'Short description for identify the movement'),
+        max_length=50,
+    )
+    amount = models.DecimalField(
+        verbose_name=_(u'Amount'),
+        decimal_places=2,
+        max_digits=7,
+    )
+    date = models.DateField(
+        verbose_name=_(u'Date'),
+    )
+
+    class Meta:
+        verbose_name = _('Movement')
+        verbose_name_plural = _('Movements')
+
+    def __unicode__(self):
+        return '%s - %s - %0.2f' % (
+            self.bank_account.last_digits,
+            self.date.strftime("%d/%m/%Y"),
+            self.amount,
+        )
+
+
+@receiver(signals.post_save, sender=Movement)
+def register_payment(sender, instance, created, **kwargs):
+    if created:
+        instance.bank_account.current_balance += instance.amount
+        instance.bank_account.save()
+
+
+@receiver(signals.post_delete, sender=Movement)
+def unregister_payment(sender, instance, **kwargs):
+    try:
+        instance.bank_account.current_balance -= instance.amount
+        instance.bank_account.save()
+    except BankAccount.DoesNotExist:
+        pass

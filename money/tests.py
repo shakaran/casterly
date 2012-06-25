@@ -1,7 +1,9 @@
+from datetime import date
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from money.models import BankAccount
+from money.models import BankAccount, Movement
 
 
 EXAMPLE_BANK_ACCOUNT = {
@@ -46,3 +48,37 @@ class BankAccountModelTest(TestCase):
         bank_account = BankAccount.objects.create(**data)
         self.assertEqual(data["initial_balance"], bank_account.initial_balance)
         self.assertEqual(data["initial_balance"], bank_account.current_balance)
+
+
+class MovementModelTest(TestCase):
+    def setUp(self):
+        super(MovementModelTest, self).setUp()
+        self.user = User.objects.create(
+            username="foouser", email="foo@example.com")
+        data = EXAMPLE_BANK_ACCOUNT.copy()
+        data["owner"] = self.user
+        self.bank_account = BankAccount.objects.create(**data)
+
+    def tearDown(self):
+        self.bank_account.delete()
+        self.user.delete()
+        super(MovementModelTest, self).tearDown()
+
+    def test_basic_movement(self):
+        self.assertEqual(20.0, self.bank_account.current_balance)
+        Movement.objects.create(
+            bank_account=self.bank_account,
+            description=u"Beers",
+            amount=-12.5,
+            date=date(2012, 5, 30),
+        )
+        self.assertEqual(7.5, self.bank_account.current_balance)
+        movement = Movement.objects.create(
+            bank_account=self.bank_account,
+            description=u"Returning",
+            amount=6.89,
+            date=date(2012, 5, 31),
+        )
+        self.assertEqual(14.39, self.bank_account.current_balance)
+        movement.delete()
+        self.assertEqual(7.5, self.bank_account.current_balance)
