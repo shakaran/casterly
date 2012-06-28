@@ -324,10 +324,17 @@ class IntenseMovementModelTest(TestCase):
         self.assertEqual(2310.6, self.bank_account.current_balance)
 
 
-# class MovementManagerTest(TestCase):
+class MovementManagerTest(TestCase):
     # expenses/earnings/benefits in a date range
     # categorized expenses/earnings/benefits in a date range
     # expenses/earnings/benefits per week and per month
+    fixtures = ["test_fixtures.json"]
+
+    def test_proper_fixtures_loading(self):
+        bank_account = BankAccount.objects.get(pk=1)
+        self.assertEqual(2310.6, bank_account.current_balance)
+        self.assertEqual(EXAMPLE_BANK_ACCOUNT["entity"], bank_account.entity)
+        self.assertEqual(23, Movement.objects.count())
 
 
 # TODO: tests about movements and categories. Probably when managers

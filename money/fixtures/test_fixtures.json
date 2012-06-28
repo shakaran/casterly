@@ -1,0 +1,287 @@
+[
+  {
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "foo", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": false, 
+      "is_staff": false, 
+      "last_login": "2012-06-28T16:19:08.172Z", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "", 
+      "email": "", 
+      "date_joined": "2012-06-28T16:19:08.172Z"
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "money.bankaccount", 
+    "fields": {
+      "initial_balance": 100.0, 
+      "description": "This is the account for all my fortune", 
+      "last_digits": "4321", 
+      "current_balance": 340.0, 
+      "entity": "Lannister associates", 
+      "owner": [
+        "foo"
+      ]
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2011-12-25", 
+      "amount": -134.3, 
+      "description": "Christmas presents", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2011-12-31", 
+      "amount": -42.56, 
+      "description": "New years eve party", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2011-12-31", 
+      "amount": 1567.0, 
+      "description": "Salary December", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-01-03", 
+      "amount": 300.0, 
+      "description": "Football bet", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-01-07", 
+      "amount": -43.2, 
+      "description": "Dinner and beers", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-01-10", 
+      "amount": -78.95, 
+      "description": "Present for Rosa", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-01-12", 
+      "amount": -800.0, 
+      "description": "Flat rental January", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-01-13", 
+      "amount": -60.4, 
+      "description": "Muse Concert", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-01-18", 
+      "amount": 1.76, 
+      "description": "Account interest", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-01-21", 
+      "amount": -18.0, 
+      "description": "Barber shop", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-01-23", 
+      "amount": -40.0, 
+      "description": "Cash for Canmden Town", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-01-28", 
+      "amount": -32.48, 
+      "description": "Cinema", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-01-30", 
+      "amount": -231.93, 
+      "description": "Flights back to Spain", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-01-31", 
+      "amount": 1567.0, 
+      "description": "Salary January", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-02-02", 
+      "amount": -213.45, 
+      "description": "Some clothes", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-02-02", 
+      "amount": -112.12, 
+      "description": "New glasses", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 17, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-02-08", 
+      "amount": -79.8, 
+      "description": "Accountant", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 18, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-02-10", 
+      "amount": -800.0, 
+      "description": "Flat rental February", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 19, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-02-14", 
+      "amount": -120.0, 
+      "description": "DjangoCon tickets", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 20, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-02-18", 
+      "amount": -89.87, 
+      "description": "DjangoCon hotel", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 21, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-02-22", 
+      "amount": -37.8, 
+      "description": "Dinner and beers", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 22, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-02-27", 
+      "amount": -97.3, 
+      "description": "Shopping at Amazon", 
+      "bank_account": 1
+    }
+  }, 
+  {
+    "pk": 23, 
+    "model": "money.movement", 
+    "fields": {
+      "category": null, 
+      "date": "2012-02-29", 
+      "amount": 1567.0, 
+      "description": "Salary February", 
+      "bank_account": 1
+    }
+  }
+]
