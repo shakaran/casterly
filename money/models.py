@@ -1,26 +1,10 @@
-from decimal import Decimal
-
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import signals
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
-
-class CurrencyField(models.DecimalField):
-    """
-    Custom field for a proper working with currencies. Using Decimal is not
-    enough because it returns the value as a normal Python float, which
-    is problematic when doing a lot of operations.
-    """
-    __metaclass__ = models.SubfieldBase
-
-    def to_python(self, value):
-        try:
-            return float(super(CurrencyField, self).to_python(
-                value).quantize(Decimal("0.01")))
-        except AttributeError:
-            return None
+from money.fields import CurrencyField
 
 
 class BankAccount(models.Model):
@@ -161,9 +145,3 @@ def unregister_payment(sender, instance, **kwargs):
         instance.bank_account.save()
     except BankAccount.DoesNotExist:
         pass
-
-
-# We need to give South some instructions about how to make
-# the migrations properly
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^money\.models\.CurrencyField"])
