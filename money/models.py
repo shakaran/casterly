@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 from money.fields import CurrencyField
+from money.managers import MovementManager
 
 
 class BankAccount(models.Model):
@@ -110,6 +111,8 @@ class Movement(models.Model):
     # TODO: Add a field with the balance on the moment of this
     # movement. The problem is, what happens if a remove a movement
     # that is not the last one? Shall we recalculate the followings?
+
+    objects = MovementManager()
 
     class Meta:
         verbose_name = _('Movement')

@@ -336,5 +336,33 @@ class MovementManagerTest(TestCase):
         self.assertEqual(EXAMPLE_BANK_ACCOUNT["entity"], bank_account.entity)
         self.assertEqual(23, Movement.objects.count())
 
+    def test_movements_one_month(self):
+        bank_account = BankAccount.objects.get(pk=1)
 
-# TODO: tests about movements and categories. Probably when managers
+        # First, we check the number of movements are corect
+        self.assertEqual(23, Movement.objects.count())
+        self.assertEqual(3, Movement.objects.per_month(2011, 12).count())
+        self.assertEqual(11, Movement.objects.per_month(2012, 1).count())
+        self.assertEqual(9, Movement.objects.per_month(2012, 2).count())
+
+        # Then, we check the expenses, earnings and balance
+        self.assertEqual(176.86, Movement.objects.per_month(
+            2011, 12).expenses())
+        self.assertEqual(1567.0, Movement.objects.per_month(
+            2011, 12).earnings())
+        self.assertEqual(1390.14, Movement.objects.per_month(
+            2011, 12).balance())
+
+        self.assertEqual(1304.96, Movement.objects.per_month(
+            2012, 1).expenses())
+        self.assertEqual(1868.76, Movement.objects.per_month(
+            2012, 1).earnings())
+        self.assertEqual(563.8, Movement.objects.per_month(
+            2012, 1).balance())
+
+        self.assertEqual(1550.34, Movement.objects.per_month(
+            2012, 2).expenses())
+        self.assertEqual(1567, Movement.objects.per_month(
+            2012, 2).earnings())
+        self.assertEqual(16.66, Movement.objects.per_month(
+            2012, 2).balance())
