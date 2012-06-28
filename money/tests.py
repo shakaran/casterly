@@ -1,4 +1,5 @@
 from datetime import date
+from decimal import Decimal
 
 from django.contrib.auth.models import User
 from django.test import TestCase
@@ -79,6 +80,6 @@ class MovementModelTest(TestCase):
             amount=6.89,
             date=date(2012, 5, 31),
         )
-        self.assertEqual(14.39, self.bank_account.current_balance)
+        self.assertEqual(Decimal('14.39'), self.bank_account.current_balance)
         movement.delete()
-        self.assertEqual(7.5, self.bank_account.current_balance)
+        self.assertEqual(Decimal('7.5'), self.bank_account.current_balance)

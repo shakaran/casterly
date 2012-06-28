@@ -7,6 +7,16 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 
+class CurrencyField(models.DecimalField):
+    __metaclass__ = models.SubfieldBase
+
+    def to_python(self, value):
+        try:
+           return super(CurrencyField, self).to_python(value).quantize(Decimal("0.01"))
+        except AttributeError:
+           return None
+
+
 class BankAccount(models.Model):
     owner = models.ForeignKey(
         User,
@@ -28,13 +38,13 @@ class BankAccount(models.Model):
         help_text=_(u'Name of the entity for this account'),
         max_length=100,
     )
-    initial_balance = models.DecimalField(
+    initial_balance = CurrencyField(
         verbose_name=_(u'Initial balance'),
         decimal_places=2,
         max_digits=7,
         default=0.0,
     )
-    current_balance = models.DecimalField(
+    current_balance = CurrencyField(
         verbose_name=_(u'Current balance'),
         decimal_places=2,
         max_digits=7,
@@ -86,7 +96,7 @@ class Movement(models.Model):
         help_text=_(u'Short description for identify the movement'),
         max_length=50,
     )
-    amount = models.DecimalField(
+    amount = CurrencyField(
         verbose_name=_(u'Amount'),
         decimal_places=2,
         max_digits=7,
@@ -121,3 +131,7 @@ def unregister_payment(sender, instance, **kwargs):
         instance.bank_account.save()
     except BankAccount.DoesNotExist:
         pass
+
+
+from south.modelsinspector import add_introspection_rules
+add_introspection_rules([], ["^money\.models\.CurrencyField"])
