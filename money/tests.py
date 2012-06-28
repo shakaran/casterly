@@ -121,3 +121,5 @@ class MovementModelTest(TestCase):
             date=date(2012, 6, 16),
         )
         self.assertEqual(0.01, self.bank_account.current_balance)
+
+# TODO: tests about movements and categories. Probably when managers

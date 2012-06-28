@@ -8,16 +8,25 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class CurrencyField(models.DecimalField):
+    """
+    Custom field for a proper working with currencies. Using Decimal is not
+    enough because it returns the value as a normal Python float, which
+    is problematic when doing a lot of operations.
+    """
     __metaclass__ = models.SubfieldBase
 
     def to_python(self, value):
         try:
-            return float(super(CurrencyField, self).to_python(value).quantize(Decimal("0.01")))
+            return float(super(CurrencyField, self).to_python(
+                value).quantize(Decimal("0.01")))
         except AttributeError:
             return None
 
 
 class BankAccount(models.Model):
+    """
+    Model for store information about personal bank accounts.
+    """
     owner = models.ForeignKey(
         User,
         verbose_name=_(u'Owner'),
@@ -62,12 +71,19 @@ class BankAccount(models.Model):
 
 @receiver(signals.post_save, sender=BankAccount)
 def set_current_balance(sender, instance, created, **kwargs):
+    """
+    Post-save signal for updating the account current balance once
+    we create a new movement for that account.
+    """
     if created and instance.current_balance == 0.0:
         instance.current_balance = instance.initial_balance
         instance.save()
 
 
 class MovementCategory(models.Model):
+    """
+    Simple model for be able to categorized movements.
+    """
     name = models.CharField(
         verbose_name=_(u'Name'), max_length=200)
 
@@ -80,6 +96,9 @@ class MovementCategory(models.Model):
 
 
 class Movement(models.Model):
+    """
+    Represents a movement into the account, in or out for the account.
+    """
     bank_account = models.ForeignKey(
         BankAccount,
         verbose_name=_(u'Bank account'),
@@ -104,6 +123,9 @@ class Movement(models.Model):
     date = models.DateField(
         verbose_name=_(u'Date'),
     )
+    # TODO: Add a field with the balance on the moment of this 
+    # movement. The problem is, what happens if a remove a movement
+    # that is not the last one? Shall we recalculate the followings?
 
     class Meta:
         verbose_name = _('Movement')
