@@ -66,14 +66,14 @@ class BankAccount(models.Model):
 
     def __unicode__(self):
         return u'%s <****%s> - %0.2f' % (
-            self.entity,self.last_digits,self.current_balance)
+            self.entity, self.last_digits, self.current_balance)
 
 
 @receiver(signals.post_save, sender=BankAccount)
 def set_current_balance(sender, instance, created, **kwargs):
     """
-    Post-save signal for updating the account current balance once
-    we create a new movement for that account.
+    Post-save signal for create a current balance in case that the
+    user didn't provide any.
     """
     if created and instance.current_balance == 0.0:
         instance.current_balance = instance.initial_balance
@@ -123,7 +123,7 @@ class Movement(models.Model):
     date = models.DateField(
         verbose_name=_(u'Date'),
     )
-    # TODO: Add a field with the balance on the moment of this 
+    # TODO: Add a field with the balance on the moment of this
     # movement. The problem is, what happens if a remove a movement
     # that is not the last one? Shall we recalculate the followings?
 
@@ -141,6 +141,10 @@ class Movement(models.Model):
 
 @receiver(signals.post_save, sender=Movement)
 def register_payment(sender, instance, created, **kwargs):
+    """
+    Post save signal for updating the bank account balance once we
+    create a movement
+    """
     if created:
         instance.bank_account.current_balance += instance.amount
         instance.bank_account.save()
@@ -148,6 +152,10 @@ def register_payment(sender, instance, created, **kwargs):
 
 @receiver(signals.post_delete, sender=Movement)
 def unregister_payment(sender, instance, **kwargs):
+    """
+    Post delete signal for updating the bank account balance once we
+    remove a movement.
+    """
     try:
         instance.bank_account.current_balance -= instance.amount
         instance.bank_account.save()
@@ -155,5 +163,7 @@ def unregister_payment(sender, instance, **kwargs):
         pass
 
 
+# We need to give South some instructions about how to make
+# the migrations properly
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([], ["^money\.models\.CurrencyField"])

@@ -1,5 +1,4 @@
 from datetime import date
-from decimal import Decimal
 
 from django.contrib.auth.models import User
 from django.test import TestCase
@@ -17,6 +16,10 @@ EXAMPLE_BANK_ACCOUNT = {
 
 
 class BankAccountModelTest(TestCase):
+    """
+    Test case for work over the BankAccount model, checking that the amounts
+    are correct, and the data have been properly assigned
+    """
     def setUp(self):
         super(BankAccountModelTest, self).setUp()
         self.user = User.objects.create(
@@ -52,6 +55,10 @@ class BankAccountModelTest(TestCase):
 
 
 class MovementModelTest(TestCase):
+    """
+    Tests for checking the correct creation of the Movement model,
+    as it's repercussion over its related BankAccount
+    """
     def setUp(self):
         super(MovementModelTest, self).setUp()
         self.user = User.objects.create(
@@ -85,6 +92,11 @@ class MovementModelTest(TestCase):
         self.assertEqual(7.5, self.bank_account.current_balance)
 
     def test_a_lot_of_movements(self):
+        """
+        This concrete test is for checking that we are not having problems
+        working with the CurrencyField and Python's Decimal, with issues like
+        getting 7.5000000001 instead of 7.5.
+        """
         self.assertEqual(20.0, self.bank_account.current_balance)
         Movement.objects.create(
             bank_account=self.bank_account,
