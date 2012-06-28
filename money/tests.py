@@ -80,6 +80,44 @@ class MovementModelTest(TestCase):
             amount=6.89,
             date=date(2012, 5, 31),
         )
-        self.assertEqual(Decimal('14.39'), self.bank_account.current_balance)
+        self.assertEqual(14.39, self.bank_account.current_balance)
         movement.delete()
-        self.assertEqual(Decimal('7.5'), self.bank_account.current_balance)
+        self.assertEqual(7.5, self.bank_account.current_balance)
+
+    def test_a_lot_of_movements(self):
+        self.assertEqual(20.0, self.bank_account.current_balance)
+        Movement.objects.create(
+            bank_account=self.bank_account,
+            description=u"Salary",
+            amount=1650,
+            date=date(2012, 5, 30),
+        )
+        self.assertEqual(1670.0, self.bank_account.current_balance)
+        Movement.objects.create(
+            bank_account=self.bank_account,
+            description=u"Beers",
+            amount=-12.5,
+            date=date(2012, 5, 31),
+        )
+        self.assertEqual(1657.5, self.bank_account.current_balance)
+        Movement.objects.create(
+            bank_account=self.bank_account,
+            description=u"Rent",
+            amount=-1005.56,
+            date=date(2012, 6, 10),
+        )
+        self.assertEqual(651.94, self.bank_account.current_balance)
+        Movement.objects.create(
+            bank_account=self.bank_account,
+            description=u"Bonus",
+            amount=450.23,
+            date=date(2012, 6, 15),
+        )
+        self.assertEqual(1102.17, self.bank_account.current_balance)
+        Movement.objects.create(
+            bank_account=self.bank_account,
+            description=u"Holidays",
+            amount=-1102.16,
+            date=date(2012, 6, 16),
+        )
+        self.assertEqual(0.01, self.bank_account.current_balance)

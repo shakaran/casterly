@@ -12,9 +12,9 @@ class CurrencyField(models.DecimalField):
 
     def to_python(self, value):
         try:
-           return super(CurrencyField, self).to_python(value).quantize(Decimal("0.01"))
+            return float(super(CurrencyField, self).to_python(value).quantize(Decimal("0.01")))
         except AttributeError:
-           return None
+            return None
 
 
 class BankAccount(models.Model):
