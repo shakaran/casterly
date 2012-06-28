@@ -22,4 +22,4 @@ class CurrencyField(models.DecimalField):
 # We need to give South some instructions about how to make
 # the migrations properly
 from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^money\.models\.CurrencyField"])
+add_introspection_rules([], ["^money\.fields\.CurrencyField"])
