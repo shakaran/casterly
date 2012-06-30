@@ -8,17 +8,17 @@ from isoweek import Week
 
 class MovementQuerySet(QuerySet):
 
-    def _amount(self, qs):
-        return float(sum([value[0] for value in qs.values_list("amount")]))
+    def _amount(self):
+        return float(sum([value[0] for value in self.values_list("amount")]))
 
     def expenses(self):
-        return abs(self._amount(self.filter(amount__lt=0.0)))
+        return abs(self.filter(amount__lt=0.0)._amount())
 
     def earnings(self):
-        return self._amount(self.filter(amount__gt=0.0))
+        return abs(self.filter(amount__gt=0.0)._amount())
 
     def balance(self):
-        return self._amount(self.all())
+        return self.all()._amount()
 
     def per_month(self, year, month):
         _, last_day = monthrange(year, month)
@@ -26,8 +26,7 @@ class MovementQuerySet(QuerySet):
             date__lte=date(year, month, last_day))
 
     def per_week(self, year, week):
-        _week = Week(year, week)
-        monday = _week.monday()
+        monday = Week(year, week).monday()
         sunday = monday + timedelta(6)
         return self.filter(date__gte=monday, date__lte=sunday)
 
