@@ -336,7 +336,7 @@ class MovementManagerTest(TestCase):
         self.assertEqual(EXAMPLE_BANK_ACCOUNT["entity"], bank_account.entity)
         self.assertEqual(23, Movement.objects.count())
 
-    def test_movements_one_month(self):
+    def test_movements_per_month(self):
         bank_account = BankAccount.objects.get(pk=1)
 
         # First, we check the number of movements are corect
@@ -366,3 +366,62 @@ class MovementManagerTest(TestCase):
             2012, 2).earnings())
         self.assertEqual(16.66, Movement.objects.per_month(
             2012, 2).balance())
+
+    def test_movements_per_week(self):
+        bank_account = BankAccount.objects.get(pk=1)
+
+        self.assertEqual(1, Movement.objects.per_week(2011, 51).count())
+        self.assertEqual(2, Movement.objects.per_week(2011, 52).count())
+        self.assertEqual(2, Movement.objects.per_week(2012, 1).count())
+        self.assertEqual(3, Movement.objects.per_week(2012, 2).count())
+        self.assertEqual(2, Movement.objects.per_week(2012, 3).count())
+        self.assertEqual(2, Movement.objects.per_week(2012, 4).count())
+        self.assertEqual(4, Movement.objects.per_week(2012, 5).count())
+        self.assertEqual(2, Movement.objects.per_week(2012, 6).count())
+        self.assertEqual(2, Movement.objects.per_week(2012, 7).count())
+        self.assertEqual(1, Movement.objects.per_week(2012, 8).count())
+        self.assertEqual(2, Movement.objects.per_week(2012, 9).count())
+
+        self.assertEqual(134.3, Movement.objects.per_week(2011, 51).expenses())
+        self.assertEqual(0, Movement.objects.per_week(2011, 51).earnings())
+        self.assertEqual(-134.3, Movement.objects.per_week(2011, 51).balance())
+
+        self.assertEqual(42.56, Movement.objects.per_week(2011, 52).expenses())
+        self.assertEqual(1567, Movement.objects.per_week(2011, 52).earnings())
+        self.assertEqual(1524.44, Movement.objects.per_week(2011, 52).balance())
+
+        self.assertEqual(43.2, Movement.objects.per_week(2012, 1).expenses())
+        self.assertEqual(300, Movement.objects.per_week(2012, 1).earnings())
+        self.assertEqual(256.8, Movement.objects.per_week(2012, 1).balance())
+
+        self.assertEqual(939.35, Movement.objects.per_week(2012, 2).expenses())
+        self.assertEqual(0, Movement.objects.per_week(2012, 2).earnings())
+        self.assertEqual(-939.35, Movement.objects.per_week(2012, 2).balance())
+
+        self.assertEqual(18, Movement.objects.per_week(2012, 3).expenses())
+        self.assertEqual(1.76, Movement.objects.per_week(2012, 3).earnings())
+        self.assertEqual(-16.24, Movement.objects.per_week(2012, 3).balance())
+
+        self.assertEqual(72.48, Movement.objects.per_week(2012, 4).expenses())
+        self.assertEqual(0, Movement.objects.per_week(2012, 4).earnings())
+        self.assertEqual(-72.48, Movement.objects.per_week(2012, 4).balance())
+
+        self.assertEqual(557.5, Movement.objects.per_week(2012, 5).expenses())
+        self.assertEqual(1567, Movement.objects.per_week(2012, 5).earnings())
+        self.assertEqual(1009.5, Movement.objects.per_week(2012, 5).balance())
+
+        self.assertEqual(879.8, Movement.objects.per_week(2012, 6).expenses())
+        self.assertEqual(0, Movement.objects.per_week(2012, 6).earnings())
+        self.assertEqual(-879.8, Movement.objects.per_week(2012, 6).balance())
+
+        self.assertEqual(209.87, Movement.objects.per_week(2012, 7).expenses())
+        self.assertEqual(0, Movement.objects.per_week(2012, 7).earnings())
+        self.assertEqual(-209.87, Movement.objects.per_week(2012, 7).balance())
+
+        self.assertEqual(37.8, Movement.objects.per_week(2012, 8).expenses())
+        self.assertEqual(0, Movement.objects.per_week(2012, 8).earnings())
+        self.assertEqual(-37.8, Movement.objects.per_week(2012, 8).balance())
+
+        self.assertEqual(97.3, Movement.objects.per_week(2012, 9).expenses())
+        self.assertEqual(1567, Movement.objects.per_week(2012, 9).earnings())
+        self.assertEqual(1469.7, Movement.objects.per_week(2012, 9).balance())

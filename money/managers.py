@@ -1,18 +1,18 @@
 from calendar import monthrange
-from datetime import date
+from datetime import date, timedelta
 
 from django.db import models
 from django.db.models.query import QuerySet
+from isoweek import Week
 
 
 class MovementQuerySet(QuerySet):
 
     def _amount(self, qs):
-        return float(abs(sum([value[0] for value
-            in qs.values_list("amount")])))
+        return float(sum([value[0] for value in qs.values_list("amount")]))
 
     def expenses(self):
-        return self._amount(self.filter(amount__lt=0.0))
+        return abs(self._amount(self.filter(amount__lt=0.0)))
 
     def earnings(self):
         return self._amount(self.filter(amount__gt=0.0))
@@ -33,3 +33,9 @@ class MovementManager(models.Manager):
         return self.get_query_set().filter(
             date__gte=date(year, month, 1),
             date__lte=date(year, month, last_day))
+
+    def per_week(self, year, week):
+        _week = Week(year, week)
+        monday = _week.monday()
+        sunday = monday + timedelta(6)
+        return self.get_query_set().filter(date__gte=monday, date__lte=sunday)
