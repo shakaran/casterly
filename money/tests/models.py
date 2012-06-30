@@ -336,6 +336,16 @@ class MovementManagerTest(TestCase):
         self.assertEqual(EXAMPLE_BANK_ACCOUNT["entity"], bank_account.entity)
         self.assertEqual(23, Movement.objects.count())
 
+    def test_all_movements(self):
+        bank_account = BankAccount.objects.get(pk=1)
+        self.assertEqual(23, Movement.objects.count())
+        self.assertEqual(18, Movement.objects.get_expenses().count())
+        self.assertEqual(5, Movement.objects.get_earnings().count())
+
+        self.assertEqual(3032.16, Movement.objects.expenses())
+        self.assertEqual(5002.76, Movement.objects.earnings())
+        self.assertEqual(1970.6, Movement.objects.balance())
+
     def test_movements_per_month(self):
         bank_account = BankAccount.objects.get(pk=1)
 
