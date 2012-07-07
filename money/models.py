@@ -94,6 +94,7 @@ class Movement(models.Model):
         verbose_name=_(u'Category'),
         blank=True,
         null=True,
+        related_name='movements',
     )
     description = models.CharField(
         verbose_name=_(u'Description'),

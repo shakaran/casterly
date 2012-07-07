@@ -3,7 +3,7 @@ from datetime import date
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from money.models import BankAccount, Movement
+from money.models import BankAccount, Movement, MovementCategory
 
 
 EXAMPLE_BANK_ACCOUNT = {
@@ -322,6 +322,109 @@ class IntenseMovementModelTest(TestCase):
             description="Salary February",
         )
         self.assertEqual(2310.6, self.bank_account.current_balance)
+
+
+class MovementCategoryModelTest(TestCase):
+
+    def setUp(self):
+        super(MovementCategoryModelTest, self).setUp()
+        self.user = User.objects.create(
+            username="foouser", email="foo@example.com")
+        data = EXAMPLE_BANK_ACCOUNT.copy()
+        data["owner"] = self.user
+        self.bank_account = BankAccount.objects.create(**data)
+
+    def tearDown(self):
+        self.bank_account.delete()
+        self.user.delete()
+        super(MovementCategoryModelTest, self).tearDown()
+
+    def test_category_create_and_delete(self):
+        self.assertEqual(0, MovementCategory.objects.count())
+        category_1 = MovementCategory.objects.create(name="Category 1")
+        category_2 = MovementCategory.objects.create(name="Category 2")
+        category_3 = MovementCategory.objects.create(name="Category 3")
+        self.assertEqual(3, MovementCategory.objects.count())
+
+        self.assertEqual("Category 1", MovementCategory.objects.get(
+            pk=category_1.pk).name)
+        self.assertEqual("Category 2", MovementCategory.objects.get(
+            pk=category_2.pk).name)
+        self.assertEqual("Category 3", MovementCategory.objects.get(
+            pk=category_3.pk).name)
+
+        category_2_pk = category_2.pk
+        category_2.delete()
+        self.assertEqual(2, MovementCategory.objects.count())
+        self.assertEqual("Category 1", MovementCategory.objects.get(
+            pk=category_1.pk).name)
+        self.assertRaises(MovementCategory.DoesNotExist,
+            MovementCategory.objects.get, pk=category_2_pk)
+        self.assertEqual("Category 3", MovementCategory.objects.get(
+            pk=category_3.pk).name)
+
+        category_3 = MovementCategory.objects.get(pk=category_3.pk)
+        category_3.name += " modified"
+        category_3.save()
+        self.assertEqual(2, MovementCategory.objects.count())
+        self.assertEqual("Category 1", MovementCategory.objects.get(
+            pk=category_1.pk).name)
+        self.assertRaises(MovementCategory.DoesNotExist,
+            MovementCategory.objects.get, pk=category_2_pk)
+        self.assertEqual("Category 3 modified", MovementCategory.objects.get(
+            pk=category_3.pk).name)
+
+    def test_category_assigned(self):
+        category_1 = MovementCategory.objects.create(name="Category 1")
+        category_2 = MovementCategory.objects.create(name="Category 2")
+        category_3 = MovementCategory.objects.create(name="Category 3")
+        self.assertEqual(20.0, self.bank_account.current_balance)
+        movement_1 = Movement.objects.create(
+            bank_account=self.bank_account,
+            description=u"Beers",
+            amount=-12.5,
+            date=date(2012, 5, 30),
+            category=category_1,
+        )
+        self.assertEqual(7.5, self.bank_account.current_balance)
+        movement_2 = Movement.objects.create(
+            bank_account=self.bank_account,
+            description=u"Returning",
+            amount=6.89,
+            date=date(2012, 5, 31),
+            category=category_2,
+        )
+        self.assertEqual(14.39, self.bank_account.current_balance)
+        movement_3 = Movement.objects.create(
+            bank_account=self.bank_account,
+            description=u"Salary",
+            amount=588,
+            date=date(2012, 6, 1),
+            category=category_2,
+        )
+        self.assertEqual(602.39, self.bank_account.current_balance)
+        movement_4 = Movement.objects.create(
+            bank_account=self.bank_account,
+            description=u"Some clothes",
+            amount=-84.6,
+            date=date(2012, 6, 4),
+            category=category_3,
+        )
+        self.assertEqual(517.79, self.bank_account.current_balance)
+
+        self.assertEqual(4, Movement.objects.count())
+        self.assertEqual(1, Movement.objects.filter(
+            category=category_1).count())
+        self.assertEqual(2, Movement.objects.filter(
+            category=category_2).count())
+        self.assertEqual(1, Movement.objects.filter(
+            category=category_3).count())
+        self.assertEqual([cat.id for cat in category_1.movements.all()],
+            [cat.id for cat in Movement.objects.filter(category=category_1)])
+        self.assertEqual([cat.id for cat in category_2.movements.all()],
+            [cat.id for cat in Movement.objects.filter(category=category_2)])
+        self.assertEqual([cat.id for cat in category_2.movements.all()],
+            [cat.id for cat in Movement.objects.filter(category=category_2)])
 
 
 class MovementManagerTest(TestCase):

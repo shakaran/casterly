@@ -1,2 +1,3 @@
 from money.tests.models import (BankAccountModelTest, MovementModelTest,
-                                IntenseMovementModelTest, MovementManagerTest)
+                                IntenseMovementModelTest, MovementManagerTest,
+                                MovementCategoryModelTest)
