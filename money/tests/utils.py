@@ -3,8 +3,8 @@ from datetime import date
 
 from django.test import TestCase
 
-from money.banks import LloydsParser
-from money.utils import parse_csv
+from money.parser import parse_csv
+from money.parser.banks import LloydsParser
 
 
 LLOYDS_SIMPLE_EXAMPLE_PAY_ROW = """
