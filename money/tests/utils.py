@@ -17,10 +17,10 @@ LLOYDS_SIMPLE_EXAMPLE_EARN_ROW = """
 class SimpleCSVParserTest(TestCase):
 
 	def setUp(self):
-		super(CSVParserTest, self).setUp()
+		super(SimpleCSVParserTest, self).setUp()
 
 	def tearDown(self):
-		super(CSVParserTest, self).tearDown()
+		super(SimpleCSVParserTest, self).tearDown()
 
 	def test_single_pay_row(self):
 		data = parse_csv(
