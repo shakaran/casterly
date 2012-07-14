@@ -14,10 +14,17 @@ def parse_csv(raw_csv, parser, header_lines=0):
 
 
 def import_movements(data, bank_account):
+	rejected = []
+	accepted = 0
 	for row in data:
-		Movement.objects.create(
+		obj, created = Movement.objects.get_or_create(
 			bank_account=bank_account,
 			description=row["description"],
 			amount=row["amount"],
 			date=row["date"],
 		)
+		if created:
+			accepted += 1
+		else:
+			rejected.append(row)
+	return accepted, rejected

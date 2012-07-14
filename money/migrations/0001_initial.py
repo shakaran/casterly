@@ -31,7 +31,7 @@ class Migration(SchemaMigration):
         db.create_table('money_movement', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('bank_account', self.gf('django.db.models.fields.related.ForeignKey')(related_name='movements', to=orm['money.BankAccount'])),
-            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['money.MovementCategory'], null=True, blank=True)),
+            ('category', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='movements', null=True, to=orm['money.MovementCategory'])),
             ('description', self.gf('django.db.models.fields.CharField')(max_length=50)),
             ('amount', self.gf('money.fields.CurrencyField')(max_digits=7, decimal_places=2)),
             ('date', self.gf('django.db.models.fields.DateField')()),
@@ -101,7 +101,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Movement'},
             'amount': ('money.fields.CurrencyField', [], {'max_digits': '7', 'decimal_places': '2'}),
             'bank_account': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'movements'", 'to': "orm['money.BankAccount']"}),
-            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['money.MovementCategory']", 'null': 'True', 'blank': 'True'}),
+            'category': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'movements'", 'null': 'True', 'to': "orm['money.MovementCategory']"}),
             'date': ('django.db.models.fields.DateField', [], {}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})

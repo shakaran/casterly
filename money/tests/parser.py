@@ -169,3 +169,21 @@ class SimpleCSVImporterTest(TestCase):
         self.assertEqual(data[1]["amount"], movements[1].amount)
         self.assertEqual(data[1]["date"], movements[1].date)
         self.assertEqual(self.bank_account, movements[1].bank_account)
+
+    def test_avoid_duplicates(self):
+        self.assertEqual(0, Movement.objects.count())
+        data = parse_csv(
+            cStringIO.StringIO(LLOYDS_SIMPLE_EXAMPLE_PAY_ROW),
+            parser=LloydsParser,
+        )
+        imported, rejected = import_movements(data, self.bank_account)
+        self.assertEqual(1, Movement.objects.count())
+        self.assertEqual(1, imported)
+        self.assertEqual(0, len(rejected))
+        imported, rejected = import_movements(data, self.bank_account)
+        self.assertEqual(1, Movement.objects.count())
+        self.assertEqual(0, imported)
+        self.assertEqual(1, len(rejected))
+        self.assertEqual(data[0]["description"], rejected[0]["description"])
+        self.assertEqual(data[0]["amount"], rejected[0]["amount"])
+        self.assertEqual(data[0]["date"], rejected[0]["date"])
