@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
 from money.fields import CurrencyField
-from money.managers import MovementManager
+from money.managers import MovementManager, SuggestionManager
 
 
 class BankAccount(models.Model):
@@ -46,8 +46,8 @@ class BankAccount(models.Model):
     )
 
     class Meta:
-        verbose_name = _('Bank Account')
-        verbose_name_plural = _('Bank Accounts')
+        verbose_name = _(u'Bank Account')
+        verbose_name_plural = _(u'Bank Accounts')
 
     def __unicode__(self):
         return u'%s <****%s> - %0.2f' % (
@@ -73,8 +73,8 @@ class MovementCategory(models.Model):
         verbose_name=_(u'Name'), max_length=200)
 
     class Meta:
-        verbose_name = _('Movement category')
-        verbose_name_plural = _('Movement categories')
+        verbose_name = _(u'Movement category')
+        verbose_name_plural = _(u'Movement categories')
 
     def __unicode__(self):
         return self.name
@@ -116,8 +116,8 @@ class Movement(models.Model):
     objects = MovementManager()
 
     class Meta:
-        verbose_name = _('Movement')
-        verbose_name_plural = _('Movements')
+        verbose_name = _(u'Movement')
+        verbose_name_plural = _(u'Movements')
 
     def __unicode__(self):
         return '%s - %s - %0.2f' % (
@@ -125,6 +125,26 @@ class Movement(models.Model):
             self.date.strftime("%d/%m/%Y"),
             self.amount,
         )
+
+
+class CategorySuggestion(models.Model):
+    expression = models.CharField(
+        verbose_name=_(u'Expression'),
+        max_length=200,
+    )
+    category = models.ForeignKey(
+        MovementCategory,
+        verbose_name=_(u'Category'),
+    )
+
+    objects = SuggestionManager()
+
+    class Meta:
+        verbose_name = _(u'Category suggestion')
+        verbose_name_plural = _(u'Category suggestions')
+
+    def __unicode__(self):
+        return u"%s - %s" % (self.expression, self.category.name)
 
 
 @receiver(signals.post_save, sender=Movement)

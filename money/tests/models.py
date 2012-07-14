@@ -3,7 +3,8 @@ from datetime import date
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from money.models import BankAccount, Movement, MovementCategory
+from money.models import (BankAccount, Movement, MovementCategory,
+                          CategorySuggestion)
 
 
 EXAMPLE_BANK_ACCOUNT = {
@@ -425,6 +426,32 @@ class MovementCategoryModelTest(TestCase):
             [cat.id for cat in Movement.objects.filter(category=category_2)])
         self.assertEqual([cat.id for cat in category_2.movements.all()],
             [cat.id for cat in Movement.objects.filter(category=category_2)])
+
+
+class MovementCategorySuggestionTest(TestCase):
+
+    def setUp(self):
+        super(MovementCategorySuggestionTest, self).setUp()
+        self.c1 = MovementCategory.objects.create(name="Category 1")
+        self.c2 = MovementCategory.objects.create(name="Category 2")
+        self.c3 = MovementCategory.objects.create(name="Category 3")
+
+    def tearDown(self):
+        MovementCategory.objects.all().delete()
+        super(MovementCategorySuggestionTest, self).tearDown()
+
+    def test_basic_suggestion(self):
+        CategorySuggestion.objects.create(
+            expression=".*food.*", category=self.c2)
+        CategorySuggestion.objects.create(
+            expression=".*clothes.*", category=self.c1)
+
+        sug_category = CategorySuggestion.objects.suggest("some food")
+        self.assertEqual(self.c2.id, sug_category.id)
+        sug_category = CategorySuggestion.objects.suggest("buying clothes")
+        self.assertEqual(self.c1.id, sug_category.id)
+        sug_category = CategorySuggestion.objects.suggest("Pub")
+        self.assertIsNone(sug_category)
 
 
 class MovementManagerTest(TestCase):

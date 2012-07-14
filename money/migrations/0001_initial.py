@@ -38,6 +38,14 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('money', ['Movement'])
 
+        # Adding model 'CategorySuggestion'
+        db.create_table('money_categorysuggestion', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('expression', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['money.MovementCategory'])),
+        ))
+        db.send_create_signal('money', ['CategorySuggestion'])
+
 
     def backwards(self, orm):
         # Deleting model 'BankAccount'
@@ -48,6 +56,9 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Movement'
         db.delete_table('money_movement')
+
+        # Deleting model 'CategorySuggestion'
+        db.delete_table('money_categorysuggestion')
 
 
     models = {
@@ -96,6 +107,12 @@ class Migration(SchemaMigration):
             'initial_balance': ('money.fields.CurrencyField', [], {'default': '0.0', 'max_digits': '7', 'decimal_places': '2'}),
             'last_digits': ('django.db.models.fields.CharField', [], {'max_length': '4'}),
             'owner': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'bank_accounts'", 'to': "orm['auth.User']"})
+        },
+        'money.categorysuggestion': {
+            'Meta': {'object_name': 'CategorySuggestion'},
+            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['money.MovementCategory']"}),
+            'expression': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         'money.movement': {
             'Meta': {'object_name': 'Movement'},

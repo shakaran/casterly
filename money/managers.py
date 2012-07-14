@@ -1,5 +1,6 @@
 from calendar import monthrange
 from datetime import date, timedelta
+import re
 
 from django.db import models
 from django.db.models.query import QuerySet
@@ -65,3 +66,12 @@ class MovementManager(models.Manager):
 
     def __getattr__(self, name):
         return getattr(self.get_query_set(), name)
+
+
+class SuggestionManager(models.Manager):
+
+    def suggest(self, suggested):
+        for obj in self.all():
+            if re.match(obj.expression, suggested):
+                return obj.category
+        return None
