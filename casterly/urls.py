@@ -6,7 +6,7 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'casterly.views.home', name='home'),
+    url(r'^$', 'casterly.views.home', name='home'),
     # url(r'^casterly/', include('casterly.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
