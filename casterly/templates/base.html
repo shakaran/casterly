@@ -24,6 +24,13 @@
        Modernizr enables HTML5 elements & feature detects for optimal performance.
        Create your own custom Modernizr build: www.modernizr.com/download/ -->
   <script src="{{ STATIC_URL }}js/libs/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+
+  <link href="{{ STATIC_URL }}css/libs/bootstrap.min.css" rel="stylesheet" media="all" type="text/css">
+  <link href="{{ STATIC_URL }}css/libs/bootstrap-responsive.min.css" rel="stylesheet" media="all" type="text/css">
+  <link href="{{ STATIC_URL }}css/styles.css" rel="stylesheet" media="all" type="text/css">
+  {% block extracss %}
+  {% endblock %}
+
 </head>
 <body class="{% block body_class %}{% endblock %}">
 {% block body %}
@@ -31,9 +38,9 @@
        chromium.org/developers/how-tos/chrome-frame-getting-started -->
   <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
   <header>
-
+    {% include "inc.header.html" %}
   </header>
-  <div role="main">
+  <div role="main" class="container-fluid">
     {% block content %}{% endblock %}
   </div>
   <footer>
@@ -46,6 +53,9 @@
   <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/libs/jquery-1.7.2.min.js"><\/script>')</script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/libs/bootstrap.min.js"></script>
+  {% block extrajs %}
+  {% endblock %}
 
 {% endblock %}
 </body>
