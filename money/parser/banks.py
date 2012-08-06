@@ -1,6 +1,12 @@
 from datetime import date
 
 
+AVAILABLE_ENTITIES = [
+	('lloyds', 'Lloyd\'s'),
+	('halifax', 'Halifax'),
+]
+
+
 class LloydsParser:
 
 	@staticmethod
@@ -18,3 +24,9 @@ class LloydsParser:
 		if row[6]:
 			data["amount"] = float(row[6])
 		return data
+
+
+ENTITY_TO_PARSER = {
+	"lloyds": LloydsParser,
+	"halifax": LloydsParser,
+}
