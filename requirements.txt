@@ -1,9 +1,9 @@
-Django==1.4
-South==0.7.5
+Django==1.4.1
+South==0.7.6
 django-debug-toolbar==0.9.4
-gunicorn==0.14.5
-ipdb==0.6.1
-ipython==0.12.1
+gunicorn==0.14.6
+ipdb==0.7
+ipython==0.13
 isoweek==1.2.0
 psycopg2==2.4.5
 wsgiref==0.1.2
