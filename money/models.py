@@ -110,12 +110,16 @@ class Movement(models.Model):
         decimal_places=2,
         max_digits=7,
     )
+    current_balance = CurrencyField(
+        verbose_name=_(u'Current balance'),
+        decimal_places=2,
+        max_digits=7,
+        blank=True,
+        null=True,
+    )
     date = models.DateField(
         verbose_name=_(u'Date'),
     )
-    # TODO: Add a field with the balance on the moment of this
-    # movement. The problem is, what happens if a remove a movement
-    # that is not the last one? Shall we recalculate the followings?
 
     objects = MovementManager()
 
@@ -163,3 +167,5 @@ def register_payment(sender, instance, created, **kwargs):
     if created:
         instance.bank_account.current_balance += instance.amount
         instance.bank_account.save()
+        instance.current_balance = instance.bank_account.current_balance
+        instance.save()

@@ -34,6 +34,7 @@ class Migration(SchemaMigration):
             ('category', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='movements', null=True, to=orm['money.MovementCategory'])),
             ('description', self.gf('django.db.models.fields.CharField')(max_length=50)),
             ('amount', self.gf('money.fields.CurrencyField')(max_digits=7, decimal_places=2)),
+            ('current_balance', self.gf('money.fields.CurrencyField')(null=True, max_digits=7, decimal_places=2, blank=True)),
             ('date', self.gf('django.db.models.fields.DateField')()),
         ))
         db.send_create_signal('money', ['Movement'])
@@ -119,6 +120,7 @@ class Migration(SchemaMigration):
             'amount': ('money.fields.CurrencyField', [], {'max_digits': '7', 'decimal_places': '2'}),
             'bank_account': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'movements'", 'to': "orm['money.BankAccount']"}),
             'category': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'movements'", 'null': 'True', 'to': "orm['money.MovementCategory']"}),
+            'current_balance': ('money.fields.CurrencyField', [], {'null': 'True', 'max_digits': '7', 'decimal_places': '2', 'blank': 'True'}),
             'date': ('django.db.models.fields.DateField', [], {}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})

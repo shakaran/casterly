@@ -75,13 +75,15 @@ class MovementModelTest(TestCase):
 
     def test_basic_movement(self):
         self.assertEqual(20.0, self.bank_account.current_balance)
-        Movement.objects.create(
+        movement = Movement.objects.create(
             bank_account=self.bank_account,
             description=u"Beers",
             amount=-12.5,
             date=date(2012, 5, 30),
         )
         self.assertEqual(7.5, self.bank_account.current_balance)
+        self.assertEqual(self.bank_account.current_balance,
+            movement.current_balance)
         movement = Movement.objects.create(
             bank_account=self.bank_account,
             description=u"Returning",
@@ -89,6 +91,8 @@ class MovementModelTest(TestCase):
             date=date(2012, 5, 31),
         )
         self.assertEqual(14.39, self.bank_account.current_balance)
+        self.assertEqual(self.bank_account.current_balance,
+            movement.current_balance)
         self.assertRaises(InvalidOperationError, movement.delete)
         self.assertEqual(14.39, self.bank_account.current_balance)
 
@@ -99,41 +103,51 @@ class MovementModelTest(TestCase):
         getting 7.5000000001 instead of 7.5.
         """
         self.assertEqual(20.0, self.bank_account.current_balance)
-        Movement.objects.create(
+        m = Movement.objects.create(
             bank_account=self.bank_account,
             description=u"Salary",
             amount=1650,
             date=date(2012, 5, 30),
         )
         self.assertEqual(1670.0, self.bank_account.current_balance)
-        Movement.objects.create(
+        self.assertEqual(self.bank_account.current_balance,
+            m.current_balance)
+        m = Movement.objects.create(
             bank_account=self.bank_account,
             description=u"Beers",
             amount=-12.5,
             date=date(2012, 5, 31),
         )
         self.assertEqual(1657.5, self.bank_account.current_balance)
-        Movement.objects.create(
+        self.assertEqual(self.bank_account.current_balance,
+            m.current_balance)
+        m = Movement.objects.create(
             bank_account=self.bank_account,
             description=u"Rent",
             amount=-1005.56,
             date=date(2012, 6, 10),
         )
         self.assertEqual(651.94, self.bank_account.current_balance)
-        Movement.objects.create(
+        self.assertEqual(self.bank_account.current_balance,
+            m.current_balance)
+        m = Movement.objects.create(
             bank_account=self.bank_account,
             description=u"Bonus",
             amount=450.23,
             date=date(2012, 6, 15),
         )
         self.assertEqual(1102.17, self.bank_account.current_balance)
-        Movement.objects.create(
+        self.assertEqual(self.bank_account.current_balance,
+            m.current_balance)
+        m = Movement.objects.create(
             bank_account=self.bank_account,
             description=u"Holidays",
             amount=-1102.16,
             date=date(2012, 6, 16),
         )
         self.assertEqual(0.01, self.bank_account.current_balance)
+        self.assertEqual(self.bank_account.current_balance,
+            m.current_balance)
 
     def test_negative_balance(self):
         self.assertEqual(20.0, self.bank_account.current_balance)
@@ -388,6 +402,8 @@ class MovementCategoryModelTest(TestCase):
             category=category_1,
         )
         self.assertEqual(7.5, self.bank_account.current_balance)
+        self.assertEqual(self.bank_account.current_balance,
+            movement_1.current_balance)
         movement_2 = Movement.objects.create(
             bank_account=self.bank_account,
             description=u"Returning",
@@ -396,6 +412,8 @@ class MovementCategoryModelTest(TestCase):
             category=category_2,
         )
         self.assertEqual(14.39, self.bank_account.current_balance)
+        self.assertEqual(self.bank_account.current_balance,
+            movement_2.current_balance)
         movement_3 = Movement.objects.create(
             bank_account=self.bank_account,
             description=u"Salary",
@@ -404,6 +422,8 @@ class MovementCategoryModelTest(TestCase):
             category=category_2,
         )
         self.assertEqual(602.39, self.bank_account.current_balance)
+        self.assertEqual(self.bank_account.current_balance,
+            movement_3.current_balance)
         movement_4 = Movement.objects.create(
             bank_account=self.bank_account,
             description=u"Some clothes",
@@ -412,6 +432,8 @@ class MovementCategoryModelTest(TestCase):
             category=category_3,
         )
         self.assertEqual(517.79, self.bank_account.current_balance)
+        self.assertEqual(self.bank_account.current_balance,
+            movement_4.current_balance)
 
         self.assertEqual(4, Movement.objects.count())
         self.assertEqual(1, Movement.objects.filter(
