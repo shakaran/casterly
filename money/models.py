@@ -8,6 +8,10 @@ from money.fields import CurrencyField
 from money.managers import MovementManager, SuggestionManager
 
 
+class InvalidOperationError(Exception):
+    pass
+
+
 class BankAccount(models.Model):
     """
     Model for store information about personal bank accounts.
@@ -119,6 +123,9 @@ class Movement(models.Model):
         verbose_name = _(u'Movement')
         verbose_name_plural = _(u'Movements')
 
+    def delete(self, *args, **kwargs):
+        raise InvalidOperationError("Delete not allowed for this model")
+
     def __unicode__(self):
         return '%s - %s - %0.2f' % (
             self.bank_account.last_digits,
@@ -156,16 +163,3 @@ def register_payment(sender, instance, created, **kwargs):
     if created:
         instance.bank_account.current_balance += instance.amount
         instance.bank_account.save()
-
-
-@receiver(signals.post_delete, sender=Movement)
-def unregister_payment(sender, instance, **kwargs):
-    """
-    Post delete signal for updating the bank account balance once we
-    remove a movement.
-    """
-    try:
-        instance.bank_account.current_balance -= instance.amount
-        instance.bank_account.save()
-    except BankAccount.DoesNotExist:
-        pass

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 
 from money.models import (BankAccount, Movement, MovementCategory,
-                          CategorySuggestion)
+                          CategorySuggestion, InvalidOperationError)
 
 
 EXAMPLE_BANK_ACCOUNT = {
@@ -89,8 +89,8 @@ class MovementModelTest(TestCase):
             date=date(2012, 5, 31),
         )
         self.assertEqual(14.39, self.bank_account.current_balance)
-        movement.delete()
-        self.assertEqual(7.5, self.bank_account.current_balance)
+        self.assertRaises(InvalidOperationError, movement.delete)
+        self.assertEqual(14.39, self.bank_account.current_balance)
 
     def test_a_lot_of_movements(self):
         """
