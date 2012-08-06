@@ -126,6 +126,7 @@ class Movement(models.Model):
     class Meta:
         verbose_name = _(u'Movement')
         verbose_name_plural = _(u'Movements')
+        ordering = ('date', )
 
     def delete(self, *args, **kwargs):
         raise InvalidOperationError("Delete not allowed for this model")
