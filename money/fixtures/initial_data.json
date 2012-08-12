@@ -1,0 +1,85 @@
+[
+  {
+    "pk": 1, 
+    "model": "money.movementcategory", 
+    "fields": {
+      "name": "Transportation"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "money.movementcategory", 
+    "fields": {
+      "name": "Food"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "money.movementcategory", 
+    "fields": {
+      "name": "Going out"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "money.movementcategory", 
+    "fields": {
+      "name": "Salary"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "money.movementcategory", 
+    "fields": {
+      "name": "Cash out"
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "money.categorysuggestion", 
+    "fields": {
+      "category": 1, 
+      "expression": "TFL"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "money.categorysuggestion", 
+    "fields": {
+      "category": 2, 
+      "expression": "SAINSBURY"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "money.categorysuggestion", 
+    "fields": {
+      "category": 3, 
+      "expression": "STARBUCKS"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "money.categorysuggestion", 
+    "fields": {
+      "category": 3, 
+      "expression": "MCDONALDS"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "money.categorysuggestion", 
+    "fields": {
+      "category": 5, 
+      "expression": "LTSB"
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "money.categorysuggestion", 
+    "fields": {
+      "category": 3, 
+      "expression": "GOURMET BURGER"
+    }
+  }
+]
