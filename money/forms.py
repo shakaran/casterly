@@ -1,6 +1,8 @@
 from django import forms
+from django.conf import settings
+from django.utils.translation import ugettext as _
 
-from money.models import BankAccount, AVAILABLE_ENTITIES
+from money.models import BankAccount, AVAILABLE_ENTITIES, MovementCategory, Movement
 from money.parser import parse_csv, import_movements
 from money.parser.banks import ENTITY_TO_PARSER
 
@@ -29,3 +31,19 @@ class UploadCSVstatementForm(forms.Form):
             bank_account = BankAccount.objects.get(
                 pk=self.cleaned_data["bank_account"])
             import_movements(data, bank_account)
+
+
+class InlineCategoryForm(forms.ModelForm):
+    movement = forms.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        super(InlineCategoryForm, self).__init__(*args, **kwargs)
+        self.fields["movement"].widget = forms.widgets.HiddenInput()
+        categories = [(None, _("None"))] + [
+            (cat.id, cat) for cat in MovementCategory.objects.all()]
+
+    class Meta:
+        model = Movement
+        fields = [
+            "category",
+        ]
