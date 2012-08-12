@@ -176,5 +176,6 @@ def register_payment(sender, instance, created, **kwargs):
     if created:
         instance.bank_account.current_balance += instance.amount
         instance.bank_account.save()
-        instance.current_balance = instance.bank_account.current_balance
-        instance.save()
+        if not instance.current_balance:
+            instance.current_balance = instance.bank_account.current_balance
+            instance.save()

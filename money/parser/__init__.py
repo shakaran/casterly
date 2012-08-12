@@ -25,6 +25,7 @@ def import_movements(data, bank_account):
             amount=row["amount"],
             date=row["date"],
             category=row["category"],
+            current_balance=row["balance"],
         )
         if created:
             accepted += 1
