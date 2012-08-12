@@ -8,6 +8,12 @@ from money.fields import CurrencyField
 from money.managers import MovementManager, SuggestionManager
 
 
+AVAILABLE_ENTITIES = [
+    ('lloyds', 'Lloyd\'s'),
+    ('halifax', 'Halifax'),
+]
+
+
 class InvalidOperationError(Exception):
     pass
 
@@ -33,8 +39,10 @@ class BankAccount(models.Model):
     )
     entity = models.CharField(
         verbose_name=_(u'Entity'),
-        help_text=_(u'Name of the entity for this account'),
+        help_text=_(u'Entity for this account'),
         max_length=100,
+        choices=AVAILABLE_ENTITIES,
+        default=AVAILABLE_ENTITIES[0],
     )
     initial_balance = CurrencyField(
         verbose_name=_(u'Initial balance'),

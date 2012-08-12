@@ -1,12 +1,6 @@
 from datetime import date
 
 
-AVAILABLE_ENTITIES = [
-	('lloyds', 'Lloyd\'s'),
-	('halifax', 'Halifax'),
-]
-
-
 class LloydsParser:
 
 	@staticmethod
