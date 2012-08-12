@@ -349,6 +349,9 @@ class MovementCategoryModelTest(TestCase):
         data["owner"] = self.user
         self.bank_account = BankAccount.objects.create(**data)
 
+        # Remove categories assigned with fixtures
+        MovementCategory.objects.all().delete()
+
     def tearDown(self):
         self.bank_account.delete()
         self.user.delete()

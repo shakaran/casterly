@@ -32,13 +32,14 @@ class SimpleCSVParserTest(TestCase):
         )
         self.assertEqual(1, len(data))
         row = data[0]
-        self.assertEqual(5, len(row.keys()))
+        self.assertEqual(6, len(row.keys()))
 
         self.assertTrue('date' in row.keys())
         self.assertTrue('account_number' in row.keys())
         self.assertTrue('description' in row.keys())
         self.assertTrue('amount' in row.keys())
         self.assertTrue('balance' in row.keys())
+        self.assertTrue('category' in row.keys())
 
         self.assertEqual(date(2011, 12, 25), row['date'])
         self.assertEqual("00-00-00 0000000", row['account_number'])
@@ -53,13 +54,14 @@ class SimpleCSVParserTest(TestCase):
         )
         self.assertEqual(1, len(data))
         row = data[0]
-        self.assertEqual(5, len(row.keys()))
+        self.assertEqual(6, len(row.keys()))
 
         self.assertTrue('date' in row.keys())
         self.assertTrue('account_number' in row.keys())
         self.assertTrue('description' in row.keys())
         self.assertTrue('amount' in row.keys())
         self.assertTrue('balance' in row.keys())
+        self.assertTrue('category' in row.keys())
 
         self.assertEqual(date(2012, 1, 6), row['date'])
         self.assertEqual("00-00-00 0000000", row['account_number'])
@@ -75,13 +77,14 @@ class SimpleCSVParserTest(TestCase):
         )
         self.assertEqual(2, len(data))
         row = data[0]
-        self.assertEqual(5, len(row.keys()))
+        self.assertEqual(6, len(row.keys()))
 
         self.assertTrue('date' in row.keys())
         self.assertTrue('account_number' in row.keys())
         self.assertTrue('description' in row.keys())
         self.assertTrue('amount' in row.keys())
         self.assertTrue('balance' in row.keys())
+        self.assertTrue('category' in row.keys())
 
         self.assertEqual(date(2011, 12, 25), row['date'])
         self.assertEqual("00-00-00 0000000", row['account_number'])
@@ -90,13 +93,14 @@ class SimpleCSVParserTest(TestCase):
         self.assertEqual(200, row['balance'])
 
         row = data[1]
-        self.assertEqual(5, len(row.keys()))
+        self.assertEqual(6, len(row.keys()))
 
         self.assertTrue('date' in row.keys())
         self.assertTrue('account_number' in row.keys())
         self.assertTrue('description' in row.keys())
         self.assertTrue('amount' in row.keys())
         self.assertTrue('balance' in row.keys())
+        self.assertTrue('category' in row.keys())
 
         self.assertEqual(date(2012, 1, 6), row['date'])
         self.assertEqual("00-00-00 0000000", row['account_number'])
