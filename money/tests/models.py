@@ -464,9 +464,9 @@ class MovementCategorySuggestionTest(TestCase):
 
     def test_basic_suggestion(self):
         CategorySuggestion.objects.create(
-            expression=".*food.*", category=self.c2)
+            expression="food", category=self.c2)
         CategorySuggestion.objects.create(
-            expression=".*clothes.*", category=self.c1)
+            expression="clothes", category=self.c1)
 
         sug_category = CategorySuggestion.objects.suggest("some food")
         self.assertEqual(self.c2.id, sug_category.id)

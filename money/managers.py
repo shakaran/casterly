@@ -72,6 +72,7 @@ class SuggestionManager(models.Manager):
 
     def suggest(self, suggested):
         for obj in self.all():
-            if re.match(obj.expression, suggested):
+            expression = ".*%s.*" % obj.expression
+            if re.match(expression, suggested):
                 return obj.category
         return None
