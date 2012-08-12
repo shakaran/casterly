@@ -1,5 +1,7 @@
 from datetime import date
 
+from money.models import CategorySuggestion
+
 
 class LloydsParser:
 
@@ -17,6 +19,7 @@ class LloydsParser:
 			data["amount"] = - float(row[5])
 		if row[6]:
 			data["amount"] = float(row[6])
+		data["category"] = CategorySuggestion.objects.suggest(data["description"])
 		return data
 
 
