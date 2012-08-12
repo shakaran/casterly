@@ -111,7 +111,7 @@ class Movement(models.Model):
     description = models.CharField(
         verbose_name=_(u'Description'),
         help_text=_(u'Short description for identify the movement'),
-        max_length=50,
+        max_length=200,
     )
     amount = CurrencyField(
         verbose_name=_(u'Amount'),

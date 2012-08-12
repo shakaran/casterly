@@ -14,7 +14,7 @@ class Migration(SchemaMigration):
             ('owner', self.gf('django.db.models.fields.related.ForeignKey')(related_name='bank_accounts', to=orm['auth.User'])),
             ('description', self.gf('django.db.models.fields.CharField')(max_length=50)),
             ('last_digits', self.gf('django.db.models.fields.CharField')(max_length=4)),
-            ('entity', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('entity', self.gf('django.db.models.fields.CharField')(default=('lloyds', "Lloyd's"), max_length=100)),
             ('initial_balance', self.gf('money.fields.CurrencyField')(default=0.0, max_digits=7, decimal_places=2)),
             ('current_balance', self.gf('money.fields.CurrencyField')(default=0.0, max_digits=7, decimal_places=2)),
         ))
@@ -32,7 +32,7 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('bank_account', self.gf('django.db.models.fields.related.ForeignKey')(related_name='movements', to=orm['money.BankAccount'])),
             ('category', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='movements', null=True, to=orm['money.MovementCategory'])),
-            ('description', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=200)),
             ('amount', self.gf('money.fields.CurrencyField')(max_digits=7, decimal_places=2)),
             ('current_balance', self.gf('money.fields.CurrencyField')(null=True, max_digits=7, decimal_places=2, blank=True)),
             ('date', self.gf('django.db.models.fields.DateField')()),
@@ -103,7 +103,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'BankAccount'},
             'current_balance': ('money.fields.CurrencyField', [], {'default': '0.0', 'max_digits': '7', 'decimal_places': '2'}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'entity': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'entity': ('django.db.models.fields.CharField', [], {'default': '(\'lloyds\', "Lloyd\'s")', 'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'initial_balance': ('money.fields.CurrencyField', [], {'default': '0.0', 'max_digits': '7', 'decimal_places': '2'}),
             'last_digits': ('django.db.models.fields.CharField', [], {'max_length': '4'}),
@@ -116,13 +116,13 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         'money.movement': {
-            'Meta': {'object_name': 'Movement'},
+            'Meta': {'ordering': "('date',)", 'object_name': 'Movement'},
             'amount': ('money.fields.CurrencyField', [], {'max_digits': '7', 'decimal_places': '2'}),
             'bank_account': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'movements'", 'to': "orm['money.BankAccount']"}),
             'category': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'movements'", 'null': 'True', 'to': "orm['money.MovementCategory']"}),
             'current_balance': ('money.fields.CurrencyField', [], {'null': 'True', 'max_digits': '7', 'decimal_places': '2', 'blank': 'True'}),
             'date': ('django.db.models.fields.DateField', [], {}),
-            'description': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         'money.movementcategory': {
